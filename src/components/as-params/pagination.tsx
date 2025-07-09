@@ -29,9 +29,9 @@ const ParamPagination: React.FC<PaginationProps> = ({
 
     let currentPage = parseInt(search[paramName] || "1", 10)
     currentPage =
-        isNaN(currentPage) || currentPage < 1 ?
-            1
-        :   Math.min(currentPage, totalPages)
+        isNaN(currentPage) || currentPage < 1
+            ? 1
+            : Math.min(currentPage, totalPages)
 
     const childPages = window.innerWidth <= 640 ? 1 : 2
 
@@ -85,9 +85,9 @@ const ParamPagination: React.FC<PaginationProps> = ({
     }
 
     const pageNumbers =
-        totalPages > 7 ? getPageNumbers() : (
-            Array.from({ length: totalPages }, (_, i) => i + 1)
-        )
+        totalPages > 7
+            ? getPageNumbers()
+            : Array.from({ length: totalPages }, (_, i) => i + 1)
 
     return (
         <div className="flex items-center gap-4">
@@ -101,11 +101,11 @@ const ParamPagination: React.FC<PaginationProps> = ({
                             onClick={handlePrevious}
                             size="icon"
                             aria-label="Previous Page"
-                            className="w-7 h-7 mt-1 sm:m-0 sm:w-10 sm:h-10"
+                            className="w-5 h-5 mt-1 sm:m-0 sm:w-7 sm:h-7 text-[10px]"
                         />
                     </PaginationItem>
                     {pageNumbers.map((page, index) =>
-                        typeof page === "number" ?
+                        typeof page === "number" ? (
                             <PaginationItem key={page}>
                                 <PaginationLink
                                     isActive={page === currentPage}
@@ -114,27 +114,29 @@ const ParamPagination: React.FC<PaginationProps> = ({
                                         "cursor-pointer",
                                         disabled &&
                                             "cursor-not-allowed pointer-events-none opacity-50",
-                                        "w-7 h-7 sm:w-10 sm:h-10",
+                                        "w-5 h-5 sm:w-7 sm:h-7 text-[10px]",
                                     )}
                                     aria-current={
-                                        page === currentPage ? "page" : (
-                                            undefined
-                                        )
+                                        page === currentPage
+                                            ? "page"
+                                            : undefined
                                     }
                                 >
                                     {page}
                                 </PaginationLink>
                             </PaginationItem>
-                        :   <PaginationItem key={`ellipsis-${index}`}>
+                        ) : (
+                            <PaginationItem key={`ellipsis-${index}`}>
                                 <PaginationEllipsis
                                     className={cn(
-                                        disabled ?
-                                            "cursor-not-allowed pointer-events-none opacity-50"
-                                        :   "",
+                                        disabled
+                                            ? "cursor-not-allowed pointer-events-none opacity-50"
+                                            : "",
                                         "w-4 sm:w-auto",
                                     )}
                                 />
-                            </PaginationItem>,
+                            </PaginationItem>
+                        ),
                     )}
                     <PaginationItem>
                         <Button
@@ -144,7 +146,7 @@ const ParamPagination: React.FC<PaginationProps> = ({
                             onClick={handleNext}
                             size="icon"
                             aria-label="Next Page"
-                            className="w-7 h-7 mt-1 sm:m-0 sm:w-10 sm:h-10"
+                            className="w-5 h-5 mt-1 sm:m-0 sm:w-7 sm:h-7"
                         />
                     </PaginationItem>
                 </PaginationContent>
@@ -152,7 +154,7 @@ const ParamPagination: React.FC<PaginationProps> = ({
             {changePageSize && (
                 <Select
                     disabled={disabled}
-                    className="w-20 h-8 sm:h-10"
+                    className="w-20 h-8 sm:h-7"
                     label=""
                     options={page_sizes?.map((size) => ({
                         label: `${size}`,

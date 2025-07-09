@@ -9,7 +9,7 @@ const Table = React.forwardRef<
     <div className="relative w-full ">
         <table
             ref={ref}
-            className={cn("w-full caption-bottom  text-sm", className)}
+            className={cn("w-full caption-bottom  text-[10px]", className)}
             {...props}
         />
     </div>
@@ -73,7 +73,7 @@ const TableHead = React.forwardRef<
     <th
         ref={ref}
         className={cn(
-            "h-10 px-2 text-left  align-middle font-medium dark:text-muted-foreground [&:has([role=checkbox])]:pr-0",
+            "h-10 px-1 text-left  align-middle font-medium dark:text-muted-foreground [&:has([role=checkbox])]:pr-0",
             className,
         )}
         {...props}
@@ -88,7 +88,7 @@ const TableCell = React.forwardRef<
     <td
         ref={ref}
         className={cn(
-            "px-2 py-1.5 !min-h-9 h-9   align-middle [&:has([role=checkbox])]:pr-0",
+            "px-1 py-1 !min-h-9 h-9   align-middle [&:has([role=checkbox])]:pr-0",
             className,
         )}
         {...props}

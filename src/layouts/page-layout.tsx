@@ -36,14 +36,15 @@ const PageLayout = ({
             </main>
             <Modal
                 size="max-w-2xl"
-                title={`Yangi mijoz ${
-                    storeData?.id ? "tahrirlash" : "qo'shish"
-                } `}
-                modalKey="customer-modal"
+                title={`Log ${storeData?.id ? "tahrirlash" : "qo'shish"} `}
+                modalKey="log-modal"
             >
-                {/* <CustomerCreate /> */}
+                <h1 className="text-2xl font-bold">
+                    {`Log ${
+                        storeData?.id ? "tahrirlash" : "qo'shish"
+                    } mumkin emas!`}
+                </h1>
             </Modal>
-           
         </div>
     )
 }

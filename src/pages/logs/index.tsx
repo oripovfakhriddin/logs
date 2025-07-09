@@ -13,8 +13,8 @@ import { useTypedStoreData } from "@/hooks/useStoreData"
 import { DEFAULT_PAGE_SIZE } from "@/constants/default"
 
 export const AllLogsPages = () => {
-    const { openModal: openCustomerAdd } = useModal("customer-modal")
-    const { openModal: openModalDelete } = useModal("customer-delete")
+    const { openModal: openCustomerAdd } = useModal("log-modal")
+    const { openModal: openModalDelete } = useModal("log-delete")
     const { storeData, setStoreData, clearUserData } =
         useTypedStoreData<LogsTypes>()
     const search = useSearch({
@@ -83,11 +83,11 @@ export const AllLogsPages = () => {
                     />
                 </CardContent>
             </Card>
-            {/* <DeleteModal
-                modalKey="customer-delete"
+            <DeleteModal
+                modalKey="log-delete"
+                path={ALLLOGS}
                 id={storeData?.id}
-                path={USERS}
-            /> */}
+            />
         </div>
     )
 }
