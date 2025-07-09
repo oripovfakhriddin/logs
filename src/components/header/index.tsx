@@ -17,15 +17,6 @@ type Props = {
     leftChildren?: ReactNode
 }
 const Header = ({ rigthChildren, leftChildren, title }: Props) => {
-    const navigate = useNavigate()
-
-    const handleLogOut = () => {
-        navigate({ to: "/auth" })
-        localStorage.removeItem("token")
-        localStorage.clear()
-        localStorage.removeItem("refresh")
-    }
-
     return (
         <header className="py-2 pr-3 pl-2 gap-4 dark:border-b  flex items-center justify-between bg-card max-w-full box-border">
             <div className="flex gap-6 items-center  max-w-full  custom-scrollbar">
@@ -56,7 +47,7 @@ const Header = ({ rigthChildren, leftChildren, title }: Props) => {
                                     className="object-cover"
                                 />
                                 <AvatarFallback className="!bg-primary/10 font-bold !text-primary hover:!bg-primary/5">
-                                    OF
+                                    KM
                                 </AvatarFallback>
                             </Avatar>
                         </DropdownMenuTrigger>
@@ -67,13 +58,10 @@ const Header = ({ rigthChildren, leftChildren, title }: Props) => {
                             asChild
                         >
                             <Link to="/">
-                                <User width={16} /> Oripov Faxriddin
+                                <User width={16} /> Kiberxavfsizlik markazi
                             </Link>
                         </DropdownMenuItem>
-                        <DropdownMenuItem
-                            className="cursor-pointer flex items-center gap-2 !text-red-500"
-                            onClick={handleLogOut}
-                        >
+                        <DropdownMenuItem className="cursor-pointer flex items-center gap-2 !text-red-500">
                             <LogOut width={16} /> Chiqish
                         </DropdownMenuItem>
                     </DropdownMenuContent>
