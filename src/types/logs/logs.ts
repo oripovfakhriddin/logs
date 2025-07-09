@@ -48,25 +48,8 @@ type LogsTypes = {
     srcserver: number
 }
 
-type LogsTypeResults = {
-    code: number
-    message: string
-    success: boolean
+type LogsTypeResults = Result & {
     log: {
         content: LogsTypes[]
-        pageable: Pageable
-        last: boolean
-        totalElements: number
-        totalPages: number
-        size: number
-        number: number
-        sort: {
-            empty: boolean
-            sorted: boolean
-            unsorted: boolean
-        }
-        first: boolean
-        numberOfElements: number
-        empty: boolean
-    }
+    } & PageableInfo
 }

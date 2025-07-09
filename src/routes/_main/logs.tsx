@@ -1,5 +1,4 @@
 import PageLayout from "@/layouts/page-layout"
-
 import { AllLogsPages } from "@/pages/logs"
 import { createFileRoute } from "@tanstack/react-router"
 

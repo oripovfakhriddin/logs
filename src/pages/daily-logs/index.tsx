@@ -2,9 +2,9 @@ import { DAILYLOGS } from "@/constants/api-endpoints"
 import { useGet } from "@/hooks/useGet"
 import { useSearch } from "@tanstack/react-router"
 
-const DashboardPage = () => {
+const DailyLogsPage = () => {
     const search = useSearch({
-        from: "/_main",
+        from: "/_main/daily-logs",
     }) as any
 
     const { data, isLoading } = useGet<DailyLogsTypeResults>(DAILYLOGS, {
@@ -13,11 +13,7 @@ const DashboardPage = () => {
 
     console.log(data)
 
-    return (
-        <div>
-            <h1 className="text-2xl font-bold">Loglar Bosh Sahifasi</h1>
-        </div>
-    )
+    return <div>DailyLogsPage</div>
 }
 
-export default DashboardPage
+export default DailyLogsPage

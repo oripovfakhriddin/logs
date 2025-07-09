@@ -13,7 +13,12 @@
 import { Route as rootRoute } from './routes/__root'
 import { Route as MainImport } from './routes/_main'
 import { Route as MainIndexImport } from './routes/_main/index'
+import { Route as MainWithTimeImport } from './routes/_main/with-time'
+import { Route as MainSortedIpLogImport } from './routes/_main/sorted-ip-log'
+import { Route as MainServicesCountImport } from './routes/_main/services-count'
 import { Route as MainLogsImport } from './routes/_main/logs'
+import { Route as MainDstCountryImport } from './routes/_main/dst-country'
+import { Route as MainDailyLogsImport } from './routes/_main/daily-logs'
 
 // Create/Update Routes
 
@@ -28,9 +33,39 @@ const MainIndexRoute = MainIndexImport.update({
   getParentRoute: () => MainRoute,
 } as any)
 
+const MainWithTimeRoute = MainWithTimeImport.update({
+  id: '/with-time',
+  path: '/with-time',
+  getParentRoute: () => MainRoute,
+} as any)
+
+const MainSortedIpLogRoute = MainSortedIpLogImport.update({
+  id: '/sorted-ip-log',
+  path: '/sorted-ip-log',
+  getParentRoute: () => MainRoute,
+} as any)
+
+const MainServicesCountRoute = MainServicesCountImport.update({
+  id: '/services-count',
+  path: '/services-count',
+  getParentRoute: () => MainRoute,
+} as any)
+
 const MainLogsRoute = MainLogsImport.update({
   id: '/logs',
   path: '/logs',
+  getParentRoute: () => MainRoute,
+} as any)
+
+const MainDstCountryRoute = MainDstCountryImport.update({
+  id: '/dst-country',
+  path: '/dst-country',
+  getParentRoute: () => MainRoute,
+} as any)
+
+const MainDailyLogsRoute = MainDailyLogsImport.update({
+  id: '/daily-logs',
+  path: '/daily-logs',
   getParentRoute: () => MainRoute,
 } as any)
 
@@ -45,11 +80,46 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MainImport
       parentRoute: typeof rootRoute
     }
+    '/_main/daily-logs': {
+      id: '/_main/daily-logs'
+      path: '/daily-logs'
+      fullPath: '/daily-logs'
+      preLoaderRoute: typeof MainDailyLogsImport
+      parentRoute: typeof MainImport
+    }
+    '/_main/dst-country': {
+      id: '/_main/dst-country'
+      path: '/dst-country'
+      fullPath: '/dst-country'
+      preLoaderRoute: typeof MainDstCountryImport
+      parentRoute: typeof MainImport
+    }
     '/_main/logs': {
       id: '/_main/logs'
       path: '/logs'
       fullPath: '/logs'
       preLoaderRoute: typeof MainLogsImport
+      parentRoute: typeof MainImport
+    }
+    '/_main/services-count': {
+      id: '/_main/services-count'
+      path: '/services-count'
+      fullPath: '/services-count'
+      preLoaderRoute: typeof MainServicesCountImport
+      parentRoute: typeof MainImport
+    }
+    '/_main/sorted-ip-log': {
+      id: '/_main/sorted-ip-log'
+      path: '/sorted-ip-log'
+      fullPath: '/sorted-ip-log'
+      preLoaderRoute: typeof MainSortedIpLogImport
+      parentRoute: typeof MainImport
+    }
+    '/_main/with-time': {
+      id: '/_main/with-time'
+      path: '/with-time'
+      fullPath: '/with-time'
+      preLoaderRoute: typeof MainWithTimeImport
       parentRoute: typeof MainImport
     }
     '/_main/': {
@@ -65,12 +135,22 @@ declare module '@tanstack/react-router' {
 // Create and export the route tree
 
 interface MainRouteChildren {
+  MainDailyLogsRoute: typeof MainDailyLogsRoute
+  MainDstCountryRoute: typeof MainDstCountryRoute
   MainLogsRoute: typeof MainLogsRoute
+  MainServicesCountRoute: typeof MainServicesCountRoute
+  MainSortedIpLogRoute: typeof MainSortedIpLogRoute
+  MainWithTimeRoute: typeof MainWithTimeRoute
   MainIndexRoute: typeof MainIndexRoute
 }
 
 const MainRouteChildren: MainRouteChildren = {
+  MainDailyLogsRoute: MainDailyLogsRoute,
+  MainDstCountryRoute: MainDstCountryRoute,
   MainLogsRoute: MainLogsRoute,
+  MainServicesCountRoute: MainServicesCountRoute,
+  MainSortedIpLogRoute: MainSortedIpLogRoute,
+  MainWithTimeRoute: MainWithTimeRoute,
   MainIndexRoute: MainIndexRoute,
 }
 
@@ -78,28 +158,67 @@ const MainRouteWithChildren = MainRoute._addFileChildren(MainRouteChildren)
 
 export interface FileRoutesByFullPath {
   '': typeof MainRouteWithChildren
+  '/daily-logs': typeof MainDailyLogsRoute
+  '/dst-country': typeof MainDstCountryRoute
   '/logs': typeof MainLogsRoute
+  '/services-count': typeof MainServicesCountRoute
+  '/sorted-ip-log': typeof MainSortedIpLogRoute
+  '/with-time': typeof MainWithTimeRoute
   '/': typeof MainIndexRoute
 }
 
 export interface FileRoutesByTo {
+  '/daily-logs': typeof MainDailyLogsRoute
+  '/dst-country': typeof MainDstCountryRoute
   '/logs': typeof MainLogsRoute
+  '/services-count': typeof MainServicesCountRoute
+  '/sorted-ip-log': typeof MainSortedIpLogRoute
+  '/with-time': typeof MainWithTimeRoute
   '/': typeof MainIndexRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/_main': typeof MainRouteWithChildren
+  '/_main/daily-logs': typeof MainDailyLogsRoute
+  '/_main/dst-country': typeof MainDstCountryRoute
   '/_main/logs': typeof MainLogsRoute
+  '/_main/services-count': typeof MainServicesCountRoute
+  '/_main/sorted-ip-log': typeof MainSortedIpLogRoute
+  '/_main/with-time': typeof MainWithTimeRoute
   '/_main/': typeof MainIndexRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '' | '/logs' | '/'
+  fullPaths:
+    | ''
+    | '/daily-logs'
+    | '/dst-country'
+    | '/logs'
+    | '/services-count'
+    | '/sorted-ip-log'
+    | '/with-time'
+    | '/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/logs' | '/'
-  id: '__root__' | '/_main' | '/_main/logs' | '/_main/'
+  to:
+    | '/daily-logs'
+    | '/dst-country'
+    | '/logs'
+    | '/services-count'
+    | '/sorted-ip-log'
+    | '/with-time'
+    | '/'
+  id:
+    | '__root__'
+    | '/_main'
+    | '/_main/daily-logs'
+    | '/_main/dst-country'
+    | '/_main/logs'
+    | '/_main/services-count'
+    | '/_main/sorted-ip-log'
+    | '/_main/with-time'
+    | '/_main/'
   fileRoutesById: FileRoutesById
 }
 
@@ -129,12 +248,37 @@ export const routeTree = rootRoute
     "/_main": {
       "filePath": "_main.tsx",
       "children": [
+        "/_main/daily-logs",
+        "/_main/dst-country",
         "/_main/logs",
+        "/_main/services-count",
+        "/_main/sorted-ip-log",
+        "/_main/with-time",
         "/_main/"
       ]
     },
+    "/_main/daily-logs": {
+      "filePath": "_main/daily-logs.tsx",
+      "parent": "/_main"
+    },
+    "/_main/dst-country": {
+      "filePath": "_main/dst-country.tsx",
+      "parent": "/_main"
+    },
     "/_main/logs": {
       "filePath": "_main/logs.tsx",
+      "parent": "/_main"
+    },
+    "/_main/services-count": {
+      "filePath": "_main/services-count.tsx",
+      "parent": "/_main"
+    },
+    "/_main/sorted-ip-log": {
+      "filePath": "_main/sorted-ip-log.tsx",
+      "parent": "/_main"
+    },
+    "/_main/with-time": {
+      "filePath": "_main/with-time.tsx",
       "parent": "/_main"
     },
     "/_main/": {
