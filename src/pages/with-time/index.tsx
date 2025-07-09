@@ -11,6 +11,7 @@ import { Plus } from "lucide-react"
 import { useWithTimeColumns } from "./columns"
 import DeleteModal from "@/components/custom/delete-modal"
 import { DEFAULT_PAGE_SIZE } from "@/constants/default"
+import { start } from "repl"
 
 const WithTimePage = () => {
     const { openModal: openCustomerAdd } = useModal("log-modal")
@@ -21,15 +22,13 @@ const WithTimePage = () => {
         from: "/_main/with-time",
     }) as any
 
-    // const { page, size } = search
-
     const { data, isLoading } = useGet<WithTimeTypeResults>(WITHTIME, {
         params: {
             ...search,
-            // page: page ? page - 1 : 0,
-            // size: size ? size : DEFAULT_PAGE_SIZE,
-            // start: "2025-06-10",
-            // end: "2025-07-10",
+            start: "2025-06-10",
+            end: "2025-07-02",
+            page: 0,
+            size: DEFAULT_PAGE_SIZE,
         },
     })
 
@@ -80,6 +79,8 @@ const WithTimePage = () => {
                         loading={isLoading}
                         paginationProps={{
                             totalPages: data?.log?.totalElements,
+                            pageSizeParamName: "size",
+                            paramName: "page",
                         }}
                         numeration
                     />
