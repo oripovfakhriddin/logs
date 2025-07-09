@@ -69,6 +69,7 @@ export const AllLogsPages = () => {
                         </div>
                     </div>
                     <DataTable
+                        className="text-[10px]"
                         columns={columns}
                         data={data?.log?.content}
                         onDelete={(item) => handleDelete(item.original)}
