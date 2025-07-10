@@ -20,7 +20,7 @@ interface IProps {
 
 export default function ParamDateRange({
     name = "date",
-    dateFormat = "yyy-MM-dd",
+    dateFormat = "yyyy-MM-dd",
     className,
     from = "from",
     to = "to",

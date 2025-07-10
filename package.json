@@ -1,5 +1,5 @@
 {
-    "name": "China Logistic",
+    "name": "Logs-csec",
     "version": "0.0.0",
     "private": true,
     "type": "module",
@@ -68,6 +68,7 @@
         "react-hook-form": "^7.53.0",
         "react-international-phone": "^4.5.0",
         "react-number-format": "^5.4.2",
+        "recharts": "2.15.4",
         "record.esm.js": "link:wavesurfer.js/dist/plugins/record.esm.js",
         "sonner": "^1.5.0",
         "tailwind-merge": "^2.5.2",

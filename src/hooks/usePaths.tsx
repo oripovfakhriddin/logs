@@ -41,14 +41,4 @@ export const items: MenuItem[] = [
         icon: <HandPlatter width={20} />,
         path: "/services-count",
     },
-    {
-        label: "Sorted IP log",
-        icon: <CalendarArrowUp width={20} />,
-        path: "/sorted-ip-log",
-    },
-    {
-        label: "With time",
-        icon: <Clock10 width={20} />,
-        path: "/with-time",
-    },
 ]

@@ -1,20 +1,5 @@
-type ServicesCountType = {
-    additionalProp1: number
-    additionalProp2: number
-    additionalProp3: number
-}
+type ServicesCountType = Record<string, number>
 
-type ServicesCountTypeResult = {
-    code: number
-    message: string
-    success: boolean
+type ServicesCountTypeResult = Result & {
     log: ServicesCountType
-    errorList:
-        | null
-        | [
-              {
-                  field: string
-                  message: string
-              },
-          ]
 }
