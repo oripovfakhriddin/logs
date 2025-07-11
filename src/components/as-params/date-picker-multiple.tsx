@@ -44,7 +44,7 @@ export function ParamDatePickerMultiple({
     const handleOnChange = (dates: Date[] | undefined) => {
         if (!disabled) {
             const formattedDates = dates
-                ?.map((date) => format(date, "yyy-MM-dd"))
+                ?.map((date) => format(date, "yyyy-MM-dd"))
                 .join(",");
             navigate({
                 search: {

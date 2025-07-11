@@ -26,19 +26,19 @@ export const items: MenuItem[] = [
         icon: <ScrollText width={20} />,
         path: "/logs",
     },
-    {
-        label: "Kunlik loglar",
-        icon: <CalendarDays width={20} />,
-        path: "/daily-logs",
-    },
-    {
-        label: "DST country",
-        icon: <School width={20} />,
-        path: "/dst-country",
-    },
-    {
-        label: "Services count",
-        icon: <HandPlatter width={20} />,
-        path: "/services-count",
-    },
+    // {
+    //     label: "Kunlik loglar",
+    //     icon: <CalendarDays width={20} />,
+    //     path: "/daily-logs",
+    // },
+    // {
+    //     label: "DST country",
+    //     icon: <School width={20} />,
+    //     path: "/dst-country",
+    // },
+    // {
+    //     label: "Services count",
+    //     icon: <HandPlatter width={20} />,
+    //     path: "/services-count",
+    // },
 ]

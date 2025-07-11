@@ -19,7 +19,7 @@ interface IProps {
 
 export default function ParamDatePicker({
     name = "date",
-    dateFormat = "yyy-MM-dd",
+    dateFormat = "yyyy-MM-dd",
     className,
     paramName = "date",
     defaultValue,

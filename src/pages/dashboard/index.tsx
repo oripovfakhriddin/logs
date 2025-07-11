@@ -41,74 +41,32 @@ import {
 } from "@/components/ui/select2"
 import { format } from "date-fns"
 import ParamDateRange from "@/components/as-params/date-picker-range"
+import { time } from "console"
+import { ParamCombobox } from "@/components/as-params/combobox"
 
 const DashboardPage = () => {
     const dateFormat = "yyyy-MM-dd"
     const today = new Date()
     const navigate = useNavigate()
-
-    const [timeRange, setTimeRange] = useState("90d")
-    const filteredData = chartData.filter((item) => {
-        const date = new Date(item.date)
-        const referenceDate = new Date("2025-08-30")
-        let daysToSubtract = 90
-        if (timeRange === "30d") {
-            daysToSubtract = 30
-        } else if (timeRange === "7d") {
-            daysToSubtract = 7
-        }
-        const startDate = new Date(referenceDate)
-        startDate.setDate(startDate.getDate() - daysToSubtract)
-        return date >= startDate
-    })
-
+    const [searchRange, setSearchRange] = useState<number>(7)
     const search = useSearch({
         from: "/_main",
     }) as any
 
-    const { startDate, endDate } = search ?? {}
-
-    useEffect(() => {
-        if (!startDate || !endDate) {
-            navigate({
-                search: {
-                    ...search,
-                    startDate:
-                        startDate ||
-                        format(
-                            new Date(today.getTime() - 24 * 60 * 60 * 1000),
-                            dateFormat,
-                        ),
-                    endDate: endDate || format(today, dateFormat),
-                },
-            })
-        }
-    }, [startDate, endDate])
-
     const { data: dataDST, isLoading: isLoadingDST } =
         useGet<DSTCountryLogsTypeResults>(DSTCOUNTRY, {
-            params: {
-                ...search,
-                startDate,
-                endDate,
-            },
+            params: search,
         })
 
     const { data: dataServicesCount, isLoading: isLoadingServicesCount } =
         useGet<ServicesCountTypeResult>(SERVICESCOUNT, {
-            params: {
-                ...search,
-                startDate,
-                endDate,
-            },
+            params: search,
         })
 
     const { data: dataDaily, isLoading: isLoadingDaily } =
         useGet<DailyLogsTypeResults>(DAILYLOGS, {
             params: {
-                ...search,
-                startDate,
-                endDate,
+                range: search?.range || 7,
             },
         })
 
@@ -162,12 +120,29 @@ const DashboardPage = () => {
         },
     }
 
+    const chartDataDaily = Object.entries(dataDaily?.log || {}).map(
+        ([date, count]) => ({
+            date: format(new Date(date), dateFormat),
+            count,
+        }),
+    )
+
+    const filteredData = chartDataDaily.filter((item) => {
+        const date = new Date(item.date)
+        const referenceDate = new Date("2025-08-30")
+        let daysToSubtract = 90
+        const startDate = new Date(referenceDate)
+        startDate.setDate(startDate.getDate() - daysToSubtract)
+        return date >= startDate
+    })
+
     return (
         <div className="w-full">
             <Card className="mb-5 rounded-lg ">
                 <CardContent className=" flex items-center justify-between">
                     <CardTitle className="text-center">
-                       Oraliqni o'zgartirish orqali barcha statistikalarni yangilashingiz mumkin.
+                        Oraliqni o'zgartirish orqali barcha statistikalarni
+                        yangilashingiz mumkin.
                     </CardTitle>
                     <ParamDateRange
                         className=""
@@ -188,7 +163,7 @@ const DashboardPage = () => {
                         <CardTitle className="text-center">
                             Loglarning malakatlar bo'yicha taqsimoti
                         </CardTitle>
-                        <CardDescription>{`2025-07-01 => 2025-07-03`}</CardDescription>
+                        <CardDescription>{`${search?.startDate} => ${search?.endDate}`}</CardDescription>
                     </CardHeader>
                     <CardContent className="flex-1 pb-0">
                         <ChartContainer
@@ -214,8 +189,8 @@ const DashboardPage = () => {
                             <TrendingUp className="h-4 w-4" />
                         </div>
                         <div className="text-muted-foreground leading-none">
-                            {`2025-07-01 => 2025-07-03`}dagi mamlakatlarning
-                            loglari soni
+                            {`${search?.startDate} => ${search?.endDate}`}{" "}
+                            oralig'idagi mamlakatlarning loglari soni
                         </div>
                     </CardFooter>
                 </Card>
@@ -224,7 +199,7 @@ const DashboardPage = () => {
                         <CardTitle className="text-center">
                             Loglardagi xizmatlarning sonlari
                         </CardTitle>
-                        <CardDescription>{`2025-07-01 => 2025-07-03`}</CardDescription>
+                        <CardDescription>{`${search?.startDate} => ${search?.endDate}`}</CardDescription>
                     </CardHeader>
                     <CardContent>
                         <ChartContainer config={chartConfigServicesCount}>
@@ -278,7 +253,8 @@ const DashboardPage = () => {
                             <TrendingUp className="h-4 w-4" />
                         </div>
                         <div className="text-muted-foreground items-center leading-none">
-                            {`2025-07-01 => 2025-07-03`} oraliqdagi jami 7 ta
+                            {`${search?.startDate} => ${search?.endDate}`}{" "}
+                            oraliqdagi jami {chartDataServicesCount.length} ta
                             xizmatning diagramasi
                         </div>
                     </CardFooter>
@@ -290,36 +266,20 @@ const DashboardPage = () => {
                         <CardTitle className="text-center">
                             Kunlik loglar
                         </CardTitle>
-                        <CardDescription>
-                            Bu diagrama{" "}
-                            {timeRange === "90d"
-                                ? "Oxirgi 3 oy"
-                                : timeRange === "30d"
-                                ? "Oxirgi 30 kun"
-                                : "Oxirgi 7 kun"}
-                            {"ni "}
-                            ko'rsatmoqda.
-                        </CardDescription>
                     </div>
-                    <Select value={timeRange} onValueChange={setTimeRange}>
-                        <SelectTrigger
-                            className=" w-[160px] rounded-lg sm:ml-auto flex"
-                            aria-label="Select a value"
-                        >
-                            <SelectValue placeholder="Last 3 months" />
-                        </SelectTrigger>
-                        <SelectContent className="rounded-xl">
-                            <SelectItem value="90d" className="rounded-lg">
-                                Oxirgi 3 oy
-                            </SelectItem>
-                            <SelectItem value="30d" className="rounded-lg">
-                                Oxirgi 30 kun
-                            </SelectItem>
-                            <SelectItem value="7d" className="rounded-lg">
-                                Oxirgi 7 kun
-                            </SelectItem>
-                        </SelectContent>
-                    </Select>
+                    <ParamCombobox
+                        options={Array.from({ length: 100 }, (_, i) => ({
+                            range: i + 1,
+                        }))}
+                        valueKey="range"
+                        labelKey="range"
+                        label="Oxirgi 7 kunlik"
+                        paramName="range"
+                        className="w-[200px]"
+                        onSearchChange={(val) => {
+                            setSearchRange(Number(val))
+                        }}
+                    />
                 </CardHeader>
                 <CardContent className="px-2 pt-4 sm:px-6 sm:pt-6">
                     <ChartContainer
@@ -386,99 +346,6 @@ const DashboardPage = () => {
     )
 }
 
-const chartData = [
-    { date: "2025-06-01", count: 97 },
-    { date: "2025-06-02", count: 97 },
-    { date: "2025-06-03", count: 97 },
-    { date: "2025-06-04", count: 97 },
-    { date: "2025-06-05", count: 222 },
-    { date: "2025-06-06", count: 222 },
-    { date: "2025-06-07", count: 222 },
-    { date: "2025-06-08", count: 222 },
-    { date: "2025-06-09", count: 167 },
-    { date: "2025-06-10", count: 167 },
-    { date: "2025-06-11", count: 167 },
-    { date: "2025-06-12", count: 167 },
-    { date: "2025-06-13", count: 242 },
-    { date: "2025-06-14", count: 242 },
-    { date: "2025-06-15", count: 242 },
-    { date: "2025-06-16", count: 242 },
-    { date: "2025-06-17", count: 373 },
-    { date: "2025-06-18", count: 301 },
-    { date: "2025-06-19", count: 245 },
-    { date: "2025-06-20", count: 409 },
-    { date: "2025-06-21", count: 59 },
-    { date: "2025-06-22", count: 261 },
-    { date: "2025-06-23", count: 327 },
-    { date: "2025-06-24", count: 292 },
-    { date: "2025-06-25", count: 342 },
-    { date: "2025-06-26", count: 137 },
-    { date: "2025-06-27", count: 120 },
-    { date: "2025-06-28", count: 138 },
-    { date: "2025-06-29", count: 446 },
-    { date: "2025-06-30", count: 364 },
-    { date: "2025-07-01", count: 165 },
-    { date: "2025-07-02", count: 293 },
-    { date: "2025-07-03", count: 247 },
-    { date: "2025-07-04", count: 385 },
-    { date: "2025-07-05", count: 481 },
-    { date: "2025-07-06", count: 498 },
-    { date: "2025-07-07", count: 388 },
-    { date: "2025-07-08", count: 149 },
-    { date: "2025-07-09", count: 227 },
-    { date: "2025-07-10", count: 293 },
-    { date: "2025-07-11", count: 335 },
-    { date: "2025-07-12", count: 197 },
-    { date: "2025-07-13", count: 197 },
-    { date: "2025-07-14", count: 448 },
-    { date: "2025-07-15", count: 473 },
-    { date: "2025-07-16", count: 338 },
-    { date: "2025-07-17", count: 499 },
-    { date: "2025-07-18", count: 315 },
-    { date: "2025-07-19", count: 235 },
-    { date: "2025-07-20", count: 177 },
-    { date: "2025-07-21", count: 82 },
-    { date: "2025-07-22", count: 81 },
-    { date: "2025-07-23", count: 252 },
-    { date: "2025-07-24", count: 294 },
-    { date: "2025-07-25", count: 201 },
-    { date: "2025-07-26", count: 213 },
-    { date: "2025-07-27", count: 420 },
-    { date: "2025-07-28", count: 233 },
-    { date: "2025-07-29", count: 78 },
-    { date: "2025-07-30", count: 340 },
-    { date: "2025-07-31", count: 178 },
-    { date: "2025-08-01", count: 178 },
-    { date: "2025-08-02", count: 470 },
-    { date: "2025-08-03", count: 103 },
-    { date: "2025-08-04", count: 439 },
-    { date: "2025-08-05", count: 88 },
-    { date: "2025-08-06", count: 294 },
-    { date: "2025-08-07", count: 323 },
-    { date: "2025-08-08", count: 385 },
-    { date: "2025-08-09", count: 438 },
-    { date: "2025-08-10", count: 155 },
-    { date: "2025-08-11", count: 92 },
-    { date: "2025-08-12", count: 492 },
-    { date: "2025-08-13", count: 81 },
-    { date: "2025-08-14", count: 426 },
-    { date: "2025-08-15", count: 307 },
-    { date: "2025-08-16", count: 371 },
-    { date: "2025-08-17", count: 475 },
-    { date: "2025-08-18", count: 107 },
-    { date: "2025-08-19", count: 341 },
-    { date: "2025-08-20", count: 408 },
-    { date: "2025-08-21", count: 169 },
-    { date: "2025-08-22", count: 317 },
-    { date: "2025-08-23", count: 480 },
-    { date: "2025-08-24", count: 132 },
-    { date: "2025-08-25", count: 141 },
-    { date: "2025-08-26", count: 434 },
-    { date: "2025-08-27", count: 448 },
-    { date: "2025-08-28", count: 149 },
-    { date: "2025-08-29", count: 103 },
-    { date: "2025-08-30", count: 446 },
-]
 const chartConfig = {
     visitors: {
         label: "Visitors",
