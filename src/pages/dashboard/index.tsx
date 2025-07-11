@@ -82,12 +82,10 @@ const DashboardPage = () => {
         useGet<DailyLogsTypeResults>(DAILYLOGS, {
             params: {
                 ...search,
-                startDate: "2025-07-01",
+                startDate: "2025-06-01",
                 endDate: "2025-07-03",
             },
         })
-
-    console.log("dataDaily", dataDaily)
 
     function countryToColor(country: string): string {
         let hash = 0

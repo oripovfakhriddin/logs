@@ -71,11 +71,13 @@ export default function ParamDatePicker({
             <DatePicker
                 date={parsedDate}
                 setDate={handleOnChange}
-                disabled={disabled}
                 {...props}
                 defaultValue={new Date()}
                 placeholder={placeholder}
-                size="default"
+                addButtonProps={{
+                    size: "default",
+                    disabled: disabled,
+                }}
             />
             {parsedDate && !disabled && (
                 <X
