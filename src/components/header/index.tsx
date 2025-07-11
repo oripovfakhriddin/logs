@@ -26,7 +26,7 @@ const Header = ({ rigthChildren, leftChildren, title }: Props) => {
                         to="/"
                         className="text-2xl text-primary  font-bold sm:block hidden"
                     >
-                        LOGlar
+                        CSEC LOGlar
                     </Link>
                 </div>
                 {title ?? (

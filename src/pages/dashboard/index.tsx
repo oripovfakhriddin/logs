@@ -64,7 +64,7 @@ const DashboardPage = () => {
         useGet<DSTCountryLogsTypeResults>(DSTCOUNTRY, {
             params: {
                 ...search,
-                startTime: "2025-07-01",
+                startDate: "2025-07-01",
                 endDate: "2025-07-03",
             },
         })
@@ -144,7 +144,7 @@ const DashboardPage = () => {
             <div className="grid grid-cols-1 gap-4  lg:grid-cols-3  mb-4">
                 <Card className="flex flex-col lg:col-span-2">
                     <CardHeader className="items-center pb-0">
-                        <CardTitle>
+                        <CardTitle className="text-center">
                             Loglarning malakatlar bo'yicha taqsimoti
                         </CardTitle>
                         <CardDescription>{`2025-07-01 => 2025-07-03`}</CardDescription>
@@ -180,7 +180,9 @@ const DashboardPage = () => {
                 </Card>
                 <Card>
                     <CardHeader className="items-center">
-                        <CardTitle>Loglardagi xizmatlarning sonlari</CardTitle>
+                        <CardTitle className="text-center">
+                            Loglardagi xizmatlarning sonlari
+                        </CardTitle>
                         <CardDescription>{`2025-07-01 => 2025-07-03`}</CardDescription>
                     </CardHeader>
                     <CardContent>
@@ -244,7 +246,9 @@ const DashboardPage = () => {
             <Card className="pt-0">
                 <CardHeader className="flex items-center gap-2 space-y-0 border-b py-5 sm:flex-row">
                     <div className="grid flex-1 gap-1">
-                        <CardTitle>Daily Logs</CardTitle>
+                        <CardTitle className="text-center">
+                            Kunlik loglar
+                        </CardTitle>
                         <CardDescription>
                             Bu diagrama{" "}
                             {timeRange === "90d"
@@ -258,7 +262,7 @@ const DashboardPage = () => {
                     </div>
                     <Select value={timeRange} onValueChange={setTimeRange}>
                         <SelectTrigger
-                            className="hidden w-[160px] rounded-lg sm:ml-auto sm:flex"
+                            className=" w-[160px] rounded-lg sm:ml-auto flex"
                             aria-label="Select a value"
                         >
                             <SelectValue placeholder="Last 3 months" />
