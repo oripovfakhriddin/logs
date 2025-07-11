@@ -1,4 +1,4 @@
-import { Fragment, useState } from "react"
+import { Fragment, useMemo, useState } from "react"
 import { useNavigate, useSearch } from "@tanstack/react-router"
 import { useGet } from "@/hooks/useGet"
 import {
@@ -77,19 +77,18 @@ const DashboardPage = () => {
             },
         })
 
-    const chartDataServicesCount = Object.entries(
-        dataServicesCount?.log || {},
-    ).map(([services, count]) => ({
-        services,
-        count,
-    }))
+    const chartDataServicesCount = useMemo(() => {
+        return Object.entries(dataServicesCount?.log || {}).map(
+            ([services, count]) => ({ services, count }),
+        )
+    }, [dataServicesCount])
 
-    const chartDataDaily = Object.entries(dataDaily?.log || {}).map(
-        ([date, count]) => ({
+    const chartDataDaily = useMemo(() => {
+        return Object.entries(dataDaily?.log || {}).map(([date, count]) => ({
             date: format(new Date(date), dateFormat),
             count,
-        }),
-    )
+        }))
+    }, [dataDaily])
 
     return (
         <div className="w-full">
