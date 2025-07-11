@@ -139,13 +139,13 @@ const DashboardPage = () => {
     return (
         <div className="w-full">
             <Card className="mb-5 rounded-lg ">
-                <CardContent className=" flex items-center justify-between">
+                <CardContent className=" flex flex-col gap-4 sm:flex-row items-center justify-between">
                     <CardTitle className="text-center">
                         Oraliqni o'zgartirish orqali barcha statistikalarni
                         yangilashingiz mumkin.
                     </CardTitle>
                     <ParamDateRange
-                        className=""
+                        className="w-full sm:w-auto"
                         from="startDate"
                         to="endDate"
                         defaultValue={{
@@ -168,7 +168,7 @@ const DashboardPage = () => {
                     <CardContent className="flex-1 pb-0">
                         <ChartContainer
                             config={chartConfigDST}
-                            className="[&_.recharts-pie-label-text]:fill-foreground mx-auto aspect-square max-h-[500px] pb-0"
+                            className="[&_.recharts-pie-label-text]:fill-foreground mx-auto aspect-square max-h-[400px] pb-0"
                         >
                             <PieChart>
                                 <ChartTooltip
@@ -262,7 +262,7 @@ const DashboardPage = () => {
             </div>
             <Card className="pt-0">
                 <CardHeader className="flex items-center gap-2 space-y-0 border-b py-5 sm:flex-row">
-                    <div className="grid flex-1 gap-1">
+                    <div className="grid flex-1 gap-1 mb-2 sm:mb-0">
                         <CardTitle className="text-center">
                             Kunlik loglar
                         </CardTitle>
@@ -275,7 +275,7 @@ const DashboardPage = () => {
                         labelKey="range"
                         label="Oxirgi 7 kunlik"
                         paramName="range"
-                        className="w-[200px]"
+                        className="w-full sm:w-[300px]  "
                         onSearchChange={(val) => {
                             setSearchRange(Number(val))
                         }}
