@@ -1,24 +1,28 @@
-import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
-import { Plus, X } from "lucide-react"
-import { useLogsColumns } from "./columns"
+import { useEffect, useMemo } from "react"
+import { format } from "date-fns"
+import { Plus } from "lucide-react"
+import { useNavigate, useSearch } from "@tanstack/react-router"
+import { useGet } from "@/hooks/useGet"
+import { useTypedStoreData } from "@/hooks/useStoreData"
+import { useModal } from "@/hooks/useModal"
 import { DataTable } from "@/components/ui/datatable"
 import ParamInput from "@/components/as-params/input"
-import { useModal } from "@/hooks/useModal"
 import DeleteModal from "@/components/custom/delete-modal"
-import { useGet } from "@/hooks/useGet"
-import { ALLLOGS } from "@/constants/api-endpoints"
-import { useNavigate, useSearch } from "@tanstack/react-router"
-import { useTypedStoreData } from "@/hooks/useStoreData"
-import { DEFAULT_PAGE_SIZE } from "@/constants/default"
+import { Card, CardContent } from "@/components/ui/card"
 import ParamDateRange from "@/components/as-params/date-picker-range"
-import { useEffect } from "react"
-import { format } from "date-fns"
+import { Button } from "@/components/ui/button"
+import { useLogsColumns } from "./columns"
+import { DEFAULT_PAGE_SIZE } from "@/constants/default"
+import { ALLLOGS } from "@/constants/api-endpoints"
 
 export const AllLogsPages = () => {
     const columns = useLogsColumns()
     const dateFormat = "yyyy-MM-dd"
-    const today = new Date()
+    const today = useMemo(() => new Date(), [])
+    const yesterday = useMemo(
+        () => new Date(today.getTime() - 24 * 60 * 60 * 1000),
+        [today],
+    )
     const navigate = useNavigate()
     const { openModal: openCustomerAdd } = useModal("log-modal")
     const { openModal: openModalDelete } = useModal("log-delete")
@@ -35,12 +39,7 @@ export const AllLogsPages = () => {
             navigate({
                 search: {
                     ...search,
-                    startDate:
-                        startDate ||
-                        format(
-                            new Date(today.getTime() - 24 * 60 * 60 * 1000),
-                            dateFormat,
-                        ),
+                    startDate: startDate || format(yesterday, dateFormat),
                     endDate: endDate || format(today, dateFormat),
                     page: page ? page - 1 : 0,
                     size: size ?? DEFAULT_PAGE_SIZE,

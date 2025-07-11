@@ -1,51 +1,15 @@
-import { Fragment, useMemo, useState } from "react"
-import { useNavigate, useSearch } from "@tanstack/react-router"
+import { lazy, Suspense, useMemo } from "react"
+import { useSearch } from "@tanstack/react-router"
 import { useGet } from "@/hooks/useGet"
-import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardFooter,
-    CardHeader,
-    CardTitle,
-} from "@/components/ui/card"
-import {
-    ChartConfig,
-    ChartContainer,
-    ChartLegend,
-    ChartLegendContent,
-    ChartTooltip,
-    ChartTooltipContent,
-} from "@/components/ui/chart"
-import {
-    Area,
-    AreaChart,
-    Bar,
-    BarChart,
-    CartesianGrid,
-    LabelList,
-    Pie,
-    PieChart,
-    XAxis,
-    YAxis,
-} from "recharts"
+import { Card, CardContent, CardTitle } from "@/components/ui/card"
 
 import { DAILYLOGS, DSTCOUNTRY, SERVICESCOUNT } from "@/constants/api-endpoints"
-import { TrendingUp } from "lucide-react"
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from "@/components/ui/select2"
+
 import { format } from "date-fns"
 import ParamDateRange from "@/components/as-params/date-picker-range"
-import { time } from "console"
-import { ParamCombobox } from "@/components/as-params/combobox"
-import PieChartCustom from "@/components/charts/pie-chart"
-import BarChartCustom from "@/components/charts/bar-chart"
-import LineChartCustom from "@/components/charts/line-chart"
+const PieChartCustom = lazy(() => import("@/components/charts/pie-chart"))
+const BarChartCustom = lazy(() => import("@/components/charts/bar-chart"))
+const LineChartCustom = lazy(() => import("@/components/charts/line-chart"))
 
 const DashboardPage = () => {
     const dateFormat = "yyyy-MM-dd"
@@ -112,10 +76,16 @@ const DashboardPage = () => {
                 </CardContent>
             </Card>
             <div className="grid grid-cols-1 gap-4  lg:grid-cols-3  mb-4">
-                <PieChartCustom data={dataDST} />
-                <BarChartCustom chartData={chartDataServicesCount} />
+                <Suspense fallback={<div>Yuklanmoqda...</div>}>
+                    <PieChartCustom data={dataDST} />
+                </Suspense>
+                <Suspense fallback={<div>Yuklanmoqda...</div>}>
+                    <BarChartCustom chartData={chartDataServicesCount} />
+                </Suspense>
             </div>
-            <LineChartCustom chartData={chartDataDaily} />
+            <Suspense fallback={<div>Yuklanmoqda...</div>}>
+                <LineChartCustom chartData={chartDataDaily} />
+            </Suspense>
         </div>
     )
 }
