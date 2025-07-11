@@ -1,5 +1,5 @@
-import { Fragment, useState } from "react"
-import { useSearch } from "@tanstack/react-router"
+import { Fragment, useEffect, useState } from "react"
+import { useNavigate, useSearch } from "@tanstack/react-router"
 import { useGet } from "@/hooks/useGet"
 import {
     Card,
@@ -39,8 +39,14 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select2"
+import { format } from "date-fns"
+import ParamDateRange from "@/components/as-params/date-picker-range"
 
 const DashboardPage = () => {
+    const dateFormat = "yyyy-MM-dd"
+    const today = new Date()
+    const navigate = useNavigate()
+
     const [timeRange, setTimeRange] = useState("90d")
     const filteredData = chartData.filter((item) => {
         const date = new Date(item.date)
@@ -60,12 +66,31 @@ const DashboardPage = () => {
         from: "/_main",
     }) as any
 
+    const { startDate, endDate } = search ?? {}
+
+    useEffect(() => {
+        if (!startDate || !endDate) {
+            navigate({
+                search: {
+                    ...search,
+                    startDate:
+                        startDate ||
+                        format(
+                            new Date(today.getTime() - 24 * 60 * 60 * 1000),
+                            dateFormat,
+                        ),
+                    endDate: endDate || format(today, dateFormat),
+                },
+            })
+        }
+    }, [startDate, endDate])
+
     const { data: dataDST, isLoading: isLoadingDST } =
         useGet<DSTCountryLogsTypeResults>(DSTCOUNTRY, {
             params: {
                 ...search,
-                startDate: "2025-07-01",
-                endDate: "2025-07-03",
+                startDate,
+                endDate,
             },
         })
 
@@ -73,8 +98,8 @@ const DashboardPage = () => {
         useGet<ServicesCountTypeResult>(SERVICESCOUNT, {
             params: {
                 ...search,
-                startDate: "2025-07-01",
-                endDate: "2025-07-03",
+                startDate,
+                endDate,
             },
         })
 
@@ -82,8 +107,8 @@ const DashboardPage = () => {
         useGet<DailyLogsTypeResults>(DAILYLOGS, {
             params: {
                 ...search,
-                startDate: "2025-06-01",
-                endDate: "2025-07-03",
+                startDate,
+                endDate,
             },
         })
 
@@ -139,6 +164,24 @@ const DashboardPage = () => {
 
     return (
         <div className="w-full">
+            <Card className="mb-5 rounded-lg ">
+                <CardContent className=" flex items-center justify-between">
+                    <CardTitle className="text-center">
+                       Oraliqni o'zgartirish orqali barcha statistikalarni yangilashingiz mumkin.
+                    </CardTitle>
+                    <ParamDateRange
+                        className=""
+                        from="startDate"
+                        to="endDate"
+                        defaultValue={{
+                            from: new Date(
+                                today.getTime() - 24 * 60 * 60 * 1000,
+                            ),
+                            to: today,
+                        }}
+                    />
+                </CardContent>
+            </Card>
             <div className="grid grid-cols-1 gap-4  lg:grid-cols-3  mb-4">
                 <Card className="flex flex-col lg:col-span-2">
                     <CardHeader className="items-center pb-0">
